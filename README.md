@@ -1,27 +1,13 @@
-**!! Atenção: Renomeie o seu repositório para (Tema)_(NomeDoProjeto). !!** 
+# NetworkComponentIdentifier
 
-Temas:
- - Grafos1
- - Grafos2
- - PD
- - D&C
- - Greed
- - Final 
- 
- **!! *Não coloque os nomes dos alunos no título do repositório*. Exemplo de título correto: Grafos2_Labirinto-do-Minotauro !!**
- 
- (Apague essa seção)
-
-# NomedoProjeto
-
-**Número da Lista**: X<br>
-**Conteúdo da Disciplina**: XXXXXXXXXX<br>
+**Número da Lista**: 2
+**Conteúdo da Disciplina**: Grafos 2
 
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 16/0049733  |  Felipe Borges de Souza Chaves |
+| 18/0055241  |  Victor Jorge da Silva Gonçalves |
 
 ## Sobre 
 Descreva os objetivos do seu projeto e como ele funciona. 
@@ -30,8 +16,7 @@ Descreva os objetivos do seu projeto e como ele funciona.
 Adicione 3 ou mais screenshots do projeto em funcionamento.
 
 ## Instalação 
-**Linguagem**: xxxxxx<br>
-**Framework**: (caso exista)<br>
+**Linguagem**: python<br>
 Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
 
 ## Uso 
@@ -39,7 +24,4 @@ Explique como usar seu projeto caso haja algum passo a passo após o comando de 
 
 ## Outros 
 Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
-
-
-
 
