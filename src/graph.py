@@ -5,9 +5,9 @@ the ID in Graph.nodes[i] that have a edge
 
 from __future__ import annotations
 
-from networkx import DiGraph
-
 import random
+
+from networkx import DiGraph
 
 def create_random_graph(names: list[str]) -> Graph:
     """
@@ -19,6 +19,8 @@ def create_random_graph(names: list[str]) -> Graph:
     max_friends = len(names)//4
 
     for name in names:
+
+        graph.add_node(name)
 
         num_friends: int = random.randint(0, max_friends)
         friends: list[int] = random.choices(names, k=num_friends)
