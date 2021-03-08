@@ -46,7 +46,7 @@ source env/bin/activate
 2) Instale as dependências
 
 ```bash
-pip3 intall -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 3) Rode o projeto
