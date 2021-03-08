@@ -1,122 +1,77 @@
-from src.graph import create_random_graph
-from collections import defaultdict
-import networkx as nx
+"""
+Receive commands and draw a random graph with N nodes
+"""
 
+import logging
 import matplotlib.pyplot as plt
+import networkx as nx
+import numpy as np
+import sys
 
-layout = nx.spring_layout
+from random import random
+from src.component import detected_components_in_digraph
+from src.graph import create_random_graph, inverse_networkx_graph, dfsNumbering
 
-def inverse_networkx_graph(graph):
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
-    r_graph = nx.DiGraph()
-
-    inverse_edges = [(y, x) for x, y in graph.edges]
-
-    r_graph.add_edges_from(inverse_edges)
-
-    [r_graph.add_node(node) for node in graph.nodes]
-
-    return r_graph
-
-
-def dfs(graph):
-
-
-    pre = defaultdict(int)
-    pos = defaultdict(int)
-    time = 1
-
-    def dfs_visit(graph, node, visited, pre, pos, time):
-
-        if not (visited[node] == 0):
-            return time
-
-        pre[node] = time
-        time+=1
-        visited[node] = True
-
-        for edge in graph[node]:
-            if not visited[edge]:
-                time = dfs_visit(graph, edge, visited, pre, pos, time)
-
-        pos[node] = time
-        time+=1
-
-        return time
-
-    visited = defaultdict(bool)
-
-    for node in graph.keys():
-        time = dfs_visit(graph, node, visited, pre, pos, time)
-
-    return pre, pos
-
-# networkx lib don't detect components in a direct graph
-def detected_components_in_digraph(graph, pos):
-
-    pos = sorted(pos.items(), key=lambda x : x[1], reverse=True)
-
-    components: list[list[str]] = []
-
-    visited = defaultdict(bool)
-
-    def mark_dfs(graph, node, visited):
-
-        component = []
-
-        if visited[node]:
-            return component
-
-        visited[node] = True
-
-        component.append(node)
-
-        for edge in graph[node]:
-            if not visited[edge]:
-                component += mark_dfs(graph, edge, visited)
-
-        return component
-
-    for key, _ in pos:
-
-        component = mark_dfs(graph, key, visited)
-
-        if len(component):
-            components.append(component)
-
-    return components
+IMG_FILE: str = 'graph.png'
 
 if __name__ == '__main__':
 
+    try:
+        N = int(sys.argv[1])
+    except IndexError:
+        N = 20
+    except ValueError: 
+        logger.error('Send argument N as a number')
+    except:
+        logger.error('Usage python main.py N')
+        raise
+
+    logger.info(f'Creating random graph with {N} nodes')
+
     nodes = []
-    for i in range(1,20):
+
+    for i in range(1, N+1):
         nodes.append(f'N{i}')
 
     G = create_random_graph(nodes)
-    lay = layout(G)
 
-    pre, pos = dfs(nx.to_dict_of_lists(G))
+    logger.info('Creating numbering')
+    pre, pos = dfsNumbering(nx.to_dict_of_lists(G))
 
+    logger.info('Creating inverse graph')
     inverse_graph = inverse_networkx_graph(G)
 
-    components = detected_components_in_digraph(nx.to_dict_of_lists(inverse_graph), pos)
+    logger.info('Generating components')
+    components = detected_components_in_digraph(
+        nx.to_dict_of_lists(inverse_graph),
+        pos
+    )
 
-    import random
+    logger.info(f'We finded {len(components)} components')
+    for pos, component in enumerate(components):
+        logger.info(f'Component {pos+1}: {component}')
 
+    logger.info('Drawing image')
     for num, component in  enumerate(components):
 
-        print(component)
         nx.draw_circular(
             G,
             width=0.5,
             nodelist=component,
             font_weight='bold',
             with_labels=True,
-            node_color=(
-                random.random(),
-                random.random(),
-                random.random()
-            )
+            node_color=np.array(
+                [
+                    random(),
+                    random(),
+                    random()
+                ]
+            ).reshape(1, -1)
         )
 
-    plt.savefig('graph.png')
+    logger.info(f'Saving image into {IMG_FILE}')
+
+    plt.savefig(IMG_FILE)
