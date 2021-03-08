@@ -1,0 +1,2 @@
+GENERATE_IMG=True
+DEBUG=False
